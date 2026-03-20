@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { assessmentSessionsApi, bodyZonesApi, movementsApi } from '../api/endpoints';
 import { hasAuthToken, ApiError } from '../api/client';
 import { AssessmentProgressHeader } from '../components/AssessmentProgressHeader';
+import { ZonePreview } from '../components/ZonePreview';
 
 export function ZoneDetailPage() {
   const { movementIndex, zoneId } = useParams<{ movementIndex: string; zoneId: string }>();
@@ -139,8 +140,8 @@ export function ZoneDetailPage() {
       <p className="text-sm font-medium text-gray-900 mb-1">Selected Area:</p>
       <p className="text-base text-gray-700 mb-4">{zone.name}</p>
 
-      <div className="mb-6 w-32 h-32 rounded-lg border border-gray-200 bg-gray-100 flex items-center justify-center">
-        <span className="text-xs text-gray-500">Zone detail</span>
+      <div className="mb-6">
+        <ZonePreview slug={zone.slug} zoneName={zone.name} />
       </div>
 
       <div className="space-y-6 mb-6">

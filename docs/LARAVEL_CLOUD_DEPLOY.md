@@ -87,33 +87,36 @@ After a successful deploy, your API will be at:
 
 Use this as the backend base URL when you deploy the frontend (e.g. `VITE_API_BASE_URL=https://<your-environment>.laravelcloud.com/api/v1`).
 
-## 5. CORS (when you add the frontend)
+## 5. CORS and Sanctum (when you add the frontend)
 
-Once the React app is on another domain (e.g. Vercel), the browser will require CORS. Laravel handles CORS via the `fruitcake/laravel-cors` config. To allow your frontend origin:
+Once the React app is on another domain (e.g. Netlify or Vercel), do the following **in Laravel Cloud** (environment variables and redeploy).
 
-1. Publish the CORS config (if not already present):
+### Step 1: Allow your frontend origin (CORS)
 
-   ```bash
-   php artisan config:publish cors
-   ```
+The project includes `backend/config/cors.php`, which reads allowed origins from the env var **`CORS_ALLOWED_ORIGINS`**.
 
-2. In `config/cors.php`, set `allowed_origins` to include your frontend URL, e.g.:
+- In **Laravel Cloud** → your Environment → **Environment variables**, add:
+  - **Key:** `CORS_ALLOWED_ORIGINS`
+  - **Value:** Your frontend URL(s), comma-separated, **no spaces**, e.g.  
+    `https://your-app.netlify.app`  
+    or multiple:  
+    `https://your-app.netlify.app,https://your-app.vercel.app`
+- If you **don’t** set this variable, the API allows all origins (`*`). Setting it restricts the API to your frontend only (recommended for production).
 
-   ```php
-   'allowed_origins' => [
-       'https://your-app.vercel.app',
-       'https://yourdomain.com',
-   ],
-   ```
+### Step 2: Sanctum stateful domains (if you use cookie-based SPA auth)
 
-3. If you use **Laravel Sanctum** with cookies (e.g. SPA auth), also set in `.env` / Laravel Cloud env:
+If you use Laravel Sanctum with cookies (not only Bearer tokens), add:
 
-   ```env
-   SANCTUM_STATEFUL_DOMAINS=your-app.vercel.app,yourdomain.com
-   SESSION_DOMAIN=.yourdomain.com
-   ```
+- **Key:** `SANCTUM_STATEFUL_DOMAINS`
+- **Value:** Your frontend **host(s)** only, comma-separated, e.g.  
+  `your-app.netlify.app`  
+  or `your-app.netlify.app,your-app.vercel.app`
 
-   (Adjust for your actual frontend domain(s).)
+(No `https://`; host only.)
+
+### Step 3: Redeploy the backend
+
+After saving the new environment variables, trigger a **new deployment** (e.g. “Deploy” in the Laravel Cloud dashboard or push a commit). CORS and Sanctum use the env config at runtime, so a redeploy is required for changes to apply.
 
 ## 6. Troubleshooting
 

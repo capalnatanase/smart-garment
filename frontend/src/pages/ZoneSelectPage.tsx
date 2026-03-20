@@ -5,7 +5,7 @@ import { assessmentSessionsApi, bodyZonesApi, movementsApi } from '../api/endpoi
 import type { BodyZone } from '../api/endpoints';
 import { hasAuthToken, ApiError } from '../api/client';
 import { AssessmentProgressHeader } from '../components/AssessmentProgressHeader';
-import { ZoneBlocks } from '../components/ZoneBlocks';
+import { BodyAvatarZoneSelect } from '../components/BodyAvatarZoneSelect';
 
 const MOVEMENT_COUNT = 5;
 
@@ -110,6 +110,10 @@ export function ZoneSelectPage() {
     );
   }
 
+  const existingResponse = session.movement_responses?.find((r) => r.movement_id === movement.id);
+  const hasSavedZones = (existingResponse?.body_zones?.length ?? 0) > 0;
+  const canProceed = noIssues || hasSavedZones;
+
   const handleBack = () => navigate(`/assessment/movements/${index}`);
 
   const handleZoneClick = (zone: BodyZone) => {
@@ -134,7 +138,7 @@ export function ZoneSelectPage() {
         Select any area you experienced restriction or discomfort.
       </p>
 
-      <ZoneBlocks zones={zones} onZoneClick={handleZoneClick} />
+      <BodyAvatarZoneSelect zones={zones} onZoneClick={handleZoneClick} />
 
       <button
         type="button"
@@ -164,10 +168,10 @@ export function ZoneSelectPage() {
         <button
           type="button"
           onClick={handleNext}
-          disabled={loading}
+          disabled={loading || !canProceed}
           aria-busy={loading}
-          aria-label={loading ? 'Saving response' : isLast ? 'Complete assessment' : 'Next movement'}
-          className="w-full h-12 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+          aria-label={!canProceed ? 'Select at least one area or tap No issues' : loading ? 'Saving response' : 'Next movement'}
+          className="w-full h-12 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Saving…' : isLast ? 'Next' : 'Next'}
         </button>

@@ -27,7 +27,7 @@ export function LoginPage() {
     try {
       const res = await subjectsApi.login(trimmed);
       setAuthToken(res.token);
-      navigate('/garment-details', { replace: true });
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       setError(err instanceof ApiError ? err.first() : err instanceof Error ? err.message : 'Login failed.');
     } finally {

@@ -28,7 +28,8 @@ export function AssessmentCompletePage() {
       assessmentSessionsApi.complete(sessionId, fb),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['assessment-session-current'] });
-      navigate('/garment-details', { replace: true });
+      queryClient.invalidateQueries({ queryKey: ['assessment-sessions-all'] });
+      navigate('/dashboard', { replace: true });
     },
   });
 

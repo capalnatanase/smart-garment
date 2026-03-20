@@ -101,6 +101,7 @@ export const bodyZonesApi = {
 };
 
 export const assessmentSessionsApi = {
+  list: () => api<{ data: AssessmentSession[] }>('/assessment-sessions'),
   current: () => api<{ data: AssessmentSession | null }>('/assessment-sessions/current'),
   get: (sessionId: number) =>
     api<{ data: AssessmentSession }>(`/assessment-sessions/${sessionId}`),

@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoginPage } from './pages/LoginPage';
 import { SignUpPage } from './pages/SignUpPage';
+import { DashboardPage } from './pages/DashboardPage';
 import { GarmentDetailsPage } from './pages/GarmentDetailsPage';
 import { AssessmentIntroPage } from './pages/AssessmentIntroPage';
 import { MovementInstructionPage } from './pages/MovementInstructionPage';
@@ -12,6 +13,7 @@ import { FeedbackYesNoPage } from './pages/FeedbackYesNoPage';
 import { FeedbackEasePage } from './pages/FeedbackEasePage';
 import { FeedbackComfortPage } from './pages/FeedbackComfortPage';
 import { FeedbackExperiencePage } from './pages/FeedbackExperiencePage';
+import { AssessmentPreviewPage } from './pages/AssessmentPreviewPage';
 import { AssessmentCompletePage } from './pages/AssessmentCompletePage';
 import './index.css';
 
@@ -29,6 +31,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/garment-details" element={<GarmentDetailsPage />} />
           <Route path="/assessment/intro" element={<AssessmentIntroPage />} />
           <Route path="/assessment/movements/:movementIndex" element={<MovementInstructionPage />} />
@@ -39,6 +42,7 @@ function App() {
           <Route path="/assessment/feedback/ease" element={<FeedbackEasePage />} />
           <Route path="/assessment/feedback/comfort" element={<FeedbackComfortPage />} />
           <Route path="/assessment/feedback/experience" element={<FeedbackExperiencePage />} />
+          <Route path="/assessment/:sessionId/preview" element={<AssessmentPreviewPage />} />
           <Route path="/assessment/complete" element={<AssessmentCompletePage />} />
         </Routes>
       </BrowserRouter>

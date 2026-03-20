@@ -1,30 +1,33 @@
 /**
- * Short letter codes for body zones (e.g. front-head → FH).
+ * Short letter codes for body zones.
  * Used for the zone selection blocks.
  */
 export const zoneLetterCodes: Record<string, string> = {
-  'front-head': 'FH',
-  'back-head': 'BH',
-  'side-head': 'SH',
+  // Front
+  'front-head-face': 'FHF',
   'front-right-shoulder': 'FRS',
   'front-left-shoulder': 'FLS',
-  'back-right-shoulder': 'BRS',
-  'back-left-shoulder': 'BLS',
-  'side-shoulder': 'SS',
   'front-right-wrist': 'FRW',
-  'front-left-wrist': 'FLW',
-  'back-right-wrist': 'BRW',
-  'back-left-wrist': 'BLW',
   'front-lower-torso-crotch': 'FLT',
-  'back-lower-torso-crotch': 'BLT',
-  'side-hip': 'SHP',
+  'front-left-wrist': 'FLW',
   'front-thighs': 'FTH',
-  'back-thighs': 'BTH',
-  'side-leg': 'SLG',
-  'front-left-shin-ankle': 'FLSA',
   'front-right-shin-ankle': 'FRSA',
+  'front-left-shin-ankle': 'FLSA',
+  // Back
+  'back-head-face': 'BHF',
+  'back-left-shoulder': 'BLS',
+  'back-right-shoulder': 'BRS',
+  'back-left-wrist': 'BLW',
+  'back-lower-torso-crotch': 'BLT',
+  'back-right-wrist': 'BRW',
+  'back-thighs': 'BTH',
   'back-left-shin-ankle': 'BLSA',
   'back-right-shin-ankle': 'BRSA',
+  // Side
+  'side-head': 'SH',
+  'side-shoulder-top-arm': 'SSTA',
+  'side-hips-wrist': 'SHW',
+  'side-lower-legs': 'SLL',
 };
 
 /** Background color for blocks by side (Tailwind classes or CSS). */

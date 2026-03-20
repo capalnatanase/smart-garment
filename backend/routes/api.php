@@ -24,6 +24,7 @@ Route::prefix('v1')->group(function () {
 
     // Protected: assessment flow (requires subject token)
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('assessment-sessions', [App\Http\Controllers\Api\V1\AssessmentSessionController::class, 'index']);
         Route::get('assessment-sessions/current', [App\Http\Controllers\Api\V1\AssessmentSessionController::class, 'current']);
         Route::post('assessment-sessions', [App\Http\Controllers\Api\V1\AssessmentSessionController::class, 'store']);
         Route::get('assessment-sessions/{session}', [App\Http\Controllers\Api\V1\AssessmentSessionController::class, 'show']);

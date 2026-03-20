@@ -12,16 +12,16 @@ class GarmentSeeder extends Seeder
     {
         $sizes = [
             ['name' => 'S'],
-            ['name' => 'M'],
+            ['name' => 'R'],
             ['name' => 'L'],
-            ['name' => 'XL'],
         ];
 
         $garmentNames = [
-            'Base Layer',
-            'Tychem Coverall',
-            'Tyvek Coverall',
-            'Trousers',
+            'Tyvek Coverall - Camo',
+            'Tyvek Coverall - Charcoal',
+            'Tychem Coverall - Camo',
+            'Tychem Coverall - Charcoal',
+            'Tyvek Overboot',
         ];
 
         foreach ($garmentNames as $name) {

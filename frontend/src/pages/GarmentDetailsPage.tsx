@@ -84,6 +84,16 @@ export function GarmentDetailsPage() {
 
   return (
     <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto">
+      <button
+        type="button"
+        onClick={() => navigate('/dashboard')}
+        className="mb-4 p-2 -ml-2 self-start text-gray-900 hover:text-gray-600"
+        aria-label="Back to dashboard"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
       <h1 className="text-lg font-medium text-gray-700 mb-1">Fit Assessment</h1>
       <h2 className="text-xl font-semibold text-gray-900 mb-2">Garment Details</h2>
       <p className="text-sm text-gray-600 mb-4">

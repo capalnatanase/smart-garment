@@ -14,6 +14,21 @@ use Illuminate\Http\Request;
 
 class AssessmentSessionController extends Controller
 {
+    public function index(Request $request): JsonResponse
+    {
+        /** @var Subject $subject */
+        $subject = $request->user();
+
+        $sessions = $subject->assessmentSessions()
+            ->with(['garment', 'size', 'movementResponses'])
+            ->orderByDesc('created_at')
+            ->get();
+
+        return response()->json([
+            'data' => $sessions->map(fn (AssessmentSession $s) => $this->formatSession($s)),
+        ]);
+    }
+
     public function current(Request $request): JsonResponse
     {
         /** @var Subject $subject */
