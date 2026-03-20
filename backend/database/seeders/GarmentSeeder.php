@@ -2,33 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\Garment;
-use App\Models\Size;
+use App\Models\Organisation;
+use App\Services\OrganisationDefaultCatalog;
 use Illuminate\Database\Seeder;
 
 class GarmentSeeder extends Seeder
 {
+    /**
+     * Creates a demo organisation with the default catalog for local development.
+     * Production data is created per organisation on signup / login sync.
+     */
     public function run(): void
     {
-        $sizes = [
-            ['name' => 'S'],
-            ['name' => 'R'],
-            ['name' => 'L'],
-        ];
-
-        $garmentNames = [
-            'Tyvek Coverall - Camo',
-            'Tyvek Coverall - Charcoal',
-            'Tychem Coverall - Camo',
-            'Tychem Coverall - Charcoal',
-            'Tyvek Overboot',
-        ];
-
-        foreach ($garmentNames as $name) {
-            $garment = Garment::firstOrCreate(['name' => $name]);
-            if ($garment->sizes()->count() === 0) {
-                $garment->sizes()->createMany($sizes);
-            }
-        }
+        $organisation = Organisation::firstOrCreate(
+            ['name' => 'Local development']
+        );
+        OrganisationDefaultCatalog::ensure($organisation);
     }
 }
