@@ -1,16 +1,32 @@
 <?php
 
-namespace Database\Seeders;
-
 use App\Models\BodyZone;
-use Illuminate\Database\Seeder;
+use App\Models\Movement;
+use Illuminate\Database\Migrations\Migration;
 
-class BodyZoneSeeder extends Seeder
+/**
+ * Ensures global reference data exists in production (deploys often run migrate without db:seed).
+ */
+return new class extends Migration
 {
-    public function run(): void
+    public function up(): void
     {
+        $movements = [
+            ['name' => 'Arms Raised', 'order' => 1],
+            ['name' => 'Squat', 'order' => 2],
+            ['name' => 'Toe Touch', 'order' => 3],
+            ['name' => 'Step Up Ladder Reach', 'order' => 4],
+            ['name' => 'Seatbelt reach', 'order' => 5],
+        ];
+
+        foreach ($movements as $m) {
+            Movement::updateOrCreate(
+                ['name' => $m['name']],
+                ['order' => $m['order'], 'video_url' => null]
+            );
+        }
+
         $zones = [
-            // Front (1–9)
             ['name' => 'Head/Face', 'slug' => 'front-head-face', 'side' => 'front'],
             ['name' => 'Right shoulder', 'slug' => 'front-right-shoulder', 'side' => 'front'],
             ['name' => 'Left shoulder', 'slug' => 'front-left-shoulder', 'side' => 'front'],
@@ -20,7 +36,6 @@ class BodyZoneSeeder extends Seeder
             ['name' => 'Thighs', 'slug' => 'front-thighs', 'side' => 'front'],
             ['name' => 'Right shin and ankle', 'slug' => 'front-right-shin-ankle', 'side' => 'front'],
             ['name' => 'Left shin and ankle', 'slug' => 'front-left-shin-ankle', 'side' => 'front'],
-            // Back (10–18)
             ['name' => 'Head/Face', 'slug' => 'back-head-face', 'side' => 'back'],
             ['name' => 'Left shoulder', 'slug' => 'back-left-shoulder', 'side' => 'back'],
             ['name' => 'Right shoulder', 'slug' => 'back-right-shoulder', 'side' => 'back'],
@@ -30,7 +45,6 @@ class BodyZoneSeeder extends Seeder
             ['name' => 'Thighs', 'slug' => 'back-thighs', 'side' => 'back'],
             ['name' => 'Left shin and ankle', 'slug' => 'back-left-shin-ankle', 'side' => 'back'],
             ['name' => 'Right shin and ankle', 'slug' => 'back-right-shin-ankle', 'side' => 'back'],
-            // Side (19–22)
             ['name' => 'Head', 'slug' => 'side-head', 'side' => 'side'],
             ['name' => 'Shoulder and top arm', 'slug' => 'side-shoulder-top-arm', 'side' => 'side'],
             ['name' => 'Hips and wrist', 'slug' => 'side-hips-wrist', 'side' => 'side'],
@@ -44,4 +58,9 @@ class BodyZoneSeeder extends Seeder
             );
         }
     }
-}
+
+    public function down(): void
+    {
+        // Reference data: leave rows in place on rollback to avoid breaking FKs.
+    }
+};

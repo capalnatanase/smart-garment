@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { assessmentSessionsApi, movementsApi } from '../api/endpoints';
 import { hasAuthToken } from '../api/client';
@@ -17,7 +17,11 @@ export function MovementInstructionPage() {
     enabled: hasAuthToken(),
   });
 
-  const { data: movementsData } = useQuery({
+  const {
+    data: movementsData,
+    isLoading: movementsLoading,
+    isError: movementsError,
+  } = useQuery({
     queryKey: ['movements'],
     queryFn: () => movementsApi.list(),
     enabled: hasAuthToken(),
@@ -26,6 +30,7 @@ export function MovementInstructionPage() {
   const session = sessionData?.data ?? null;
   const movements = movementsData?.data ?? [];
   const movement = movements[index] ?? null;
+  const movementsReady = !movementsLoading && !movementsError && movementsData !== undefined;
 
   if (!hasAuthToken()) {
     navigate('/login', { replace: true });
@@ -42,7 +47,33 @@ export function MovementInstructionPage() {
     return null;
   }
 
+  if (movementsError) {
+    return (
+      <div className="min-h-svh flex flex-col items-center justify-center gap-4 px-6 max-w-mobile mx-auto text-center">
+        <p className="text-gray-800 font-medium">Could not load movements.</p>
+        <p className="text-sm text-gray-600">Check your connection or try again later.</p>
+        <Link to="/assessment/intro" className="text-indigo-600 text-sm font-medium">
+          Back to intro
+        </Link>
+      </div>
+    );
+  }
+
   if (!movement) {
+    if (movementsReady && movements.length === 0) {
+      return (
+        <div className="min-h-svh flex flex-col items-center justify-center gap-4 px-6 max-w-mobile mx-auto text-center">
+          <p className="text-gray-800 font-medium">No movements are configured yet.</p>
+          <p className="text-sm text-gray-600">
+            The assessment needs movement data from the server. If you’re an administrator, ensure the latest
+            database migration has been deployed.
+          </p>
+          <Link to="/assessment/intro" className="text-indigo-600 text-sm font-medium">
+            Back to intro
+          </Link>
+        </div>
+      );
+    }
     return (
       <div className="min-h-svh flex items-center justify-center max-w-mobile mx-auto">
         <p className="text-gray-600">Loading…</p>

@@ -18,7 +18,10 @@ class MovementSeeder extends Seeder
         ];
 
         foreach ($movements as $m) {
-            Movement::create(array_merge($m, ['video_url' => null]));
+            Movement::updateOrCreate(
+                ['name' => $m['name']],
+                ['order' => $m['order'], 'video_url' => null]
+            );
         }
     }
 }

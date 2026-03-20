@@ -54,6 +54,8 @@ php artisan migrate --force
 
 (Or run migrations from the dashboard / one-off commands if you prefer.)
 
+**Reference data:** Migrations include `2026_03_20_130000_seed_reference_data_movements_and_body_zones`, which fills **movements** and **body zones** if they are missing. You do **not** need to run `db:seed` on Laravel Cloud for those tables—`migrate --force` is enough after that migration is deployed.
+
 ## 3. Environment variables
 
 In the Laravel Cloud environment, set at least:
