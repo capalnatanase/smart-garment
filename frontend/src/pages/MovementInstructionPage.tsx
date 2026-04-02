@@ -101,8 +101,22 @@ export function MovementInstructionPage() {
         </h2>
       </div>
 
-      <div className="mb-6 aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-        <span className="text-gray-500 text-sm">Video placeholder</span>
+      <div className="mb-6 aspect-video bg-gray-200 rounded-lg overflow-hidden">
+        {movement.video_url ? (
+          <video
+            key={movement.video_url}
+            className="w-full h-full object-cover"
+            controls
+            playsInline
+            preload="metadata"
+          >
+            <source src={movement.video_url} type="video/mp4" />
+          </video>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-gray-500 text-sm">No video available</span>
+          </div>
+        )}
       </div>
       <p className="mb-8 text-sm text-gray-600">
         Please perform the movement as shown in the video while wearing the selected garment.
