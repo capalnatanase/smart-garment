@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { assessmentSessionsApi, bodyZonesApi, movementsApi } from '../api/endpoints';
 import { hasAuthToken, ApiError } from '../api/client';
 import { AssessmentProgressHeader } from '../components/AssessmentProgressHeader';
-import { ZonePreview } from '../components/ZonePreview';
+import { ZoneZoomPreview } from '../components/ZoneZoomPreview';
 
 export function ZoneDetailPage() {
   const { movementIndex, zoneId } = useParams<{ movementIndex: string; zoneId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const index = Math.max(0, parseInt(movementIndex ?? '0', 10));
   const zoneIdNum = parseInt(zoneId ?? '0', 10);
@@ -39,6 +40,28 @@ export function ZoneDetailPage() {
   const movement = movements[index] ?? null;
   const zones = zonesData?.data ?? [];
   const zone = zones.find((z) => z.id === zoneIdNum) ?? null;
+  const detailState = (location.state ?? {}) as {
+    selectedAreaLabel?: string;
+    selectedAreaView?: 'front' | 'back' | 'side';
+    selectedAreaSectionId?: string;
+  };
+
+  const inferSectionIdFromSlug = (slug: string, side: string): string => {
+    if (side === 'side') {
+      if (slug === 'side-head') return '1';
+      if (slug === 'side-shoulder-top-arm') return '2';
+      if (slug === 'side-hips-wrist') return '3';
+      if (slug === 'side-lower-legs') return '4';
+      return '1';
+    }
+    if (slug.includes('head')) return '8';
+    if (slug.includes('shoulder')) return '2';
+    if (slug.includes('wrist')) return '3';
+    if (slug.includes('lower-torso')) return '4';
+    if (slug.includes('thigh')) return '5';
+    if (slug.includes('shin-ankle')) return '6';
+    return '1';
+  };
 
   const storeResponse = useMutation({
     mutationFn: ({
@@ -138,10 +161,14 @@ export function ZoneDetailPage() {
       </div>
 
       <p className="text-sm font-medium text-gray-900 mb-1">Selected Area:</p>
-      <p className="text-base text-gray-700 mb-4">{zone.name}</p>
+      <p className="text-base text-gray-700 mb-4">{detailState.selectedAreaLabel ?? zone.name}</p>
 
       <div className="mb-6">
-        <ZonePreview slug={zone.slug} zoneName={zone.name} />
+        <ZoneZoomPreview
+          view={detailState.selectedAreaView ?? ((zone.side as 'front' | 'back' | 'side') || 'front')}
+          sectionId={detailState.selectedAreaSectionId ?? inferSectionIdFromSlug(zone.slug, zone.side)}
+          zoneName={detailState.selectedAreaLabel ?? zone.name}
+        />
       </div>
 
       <div className="space-y-6 mb-6">
@@ -209,7 +236,7 @@ export function ZoneDetailPage() {
             id="zone-comments"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
-            placeholder="Optional additional feedback…"
+            placeholder="Please describe the issue in your own words…"
             rows={3}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white resize-none"
             aria-label="Comments for this area"

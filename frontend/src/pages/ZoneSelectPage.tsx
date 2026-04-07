@@ -116,8 +116,17 @@ export function ZoneSelectPage() {
 
   const handleBack = () => navigate(`/assessment/movements/${index}`);
 
-  const handleZoneClick = (zone: BodyZone) => {
-    navigate(`/assessment/movements/${index}/zones/${zone.id}/detail`);
+  const handleZoneClick = (
+    zone: BodyZone,
+    meta: { view: 'front' | 'back' | 'side'; sectionId: string; sectionLabel: string }
+  ) => {
+    navigate(`/assessment/movements/${index}/zones/${zone.id}/detail`, {
+      state: {
+        selectedAreaLabel: meta.sectionLabel,
+        selectedAreaView: meta.view,
+        selectedAreaSectionId: meta.sectionId,
+      },
+    });
   };
 
   return (
