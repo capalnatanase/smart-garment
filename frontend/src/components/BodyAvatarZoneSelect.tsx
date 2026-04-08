@@ -57,48 +57,37 @@ const VIEW_SECTIONS: Record<BodyView, Record<string, string>> = {
 
 const DEFAULT_SECTION_STYLES: Record<BodyView, SectionStyleMap> = {
   front: {
-    '1': { color: '#7c3aed', size: 100, opacity: 50 },
-    '2': { color: '#0284c7', size: 100, opacity: 50 },
-    '3': { color: '#0d9488', size: 100, opacity: 50 },
-    '4': { color: '#059669', size: 100, opacity: 50 },
-    '5': { color: '#d97706', size: 100, opacity: 50 },
-    '6': { color: '#ea580c', size: 100, opacity: 50 },
-    '7': { color: '#e11d48', size: 100, opacity: 50 },
-    '8': { color: '#dc2626', size: 100, opacity: 50 },
+    '1': { color: '#9469DD', size: 100, opacity: 35 }, // Upper torso
+    '2': { color: '#FDF50D', size: 100, opacity: 35 }, // Bicep / Shoulder
+    '3': { color: '#14F0DE', size: 100, opacity: 35 }, // Forearm
+    '4': { color: '#43F94F', size: 100, opacity: 35 }, // Lower torso
+    '5': { color: '#FF941A', size: 100, opacity: 35 }, // Thighs
+    '6': { color: '#2BDABC', size: 100, opacity: 70 }, // Knees
+    '7': { color: '#FB0E81', size: 100, opacity: 45 }, // Ankles
+    '8': { color: '#DC2626', size: 100, opacity: 35 }, // Head
   },
   back: {
-    '1': { color: '#7c3aed', size: 100, opacity: 50 },
-    '2': { color: '#0284c7', size: 100, opacity: 50 },
-    '3': { color: '#0d9488', size: 100, opacity: 50 },
-    '4': { color: '#059669', size: 100, opacity: 50 },
-    '5': { color: '#d97706', size: 100, opacity: 50 },
-    '6': { color: '#ea580c', size: 100, opacity: 50 },
-    '7': { color: '#e11d48', size: 100, opacity: 50 },
-    '8': { color: '#dc2626', size: 100, opacity: 50 },
+    '1': { color: '#9469DD', size: 100, opacity: 35 }, // Upper torso
+    '2': { color: '#FDF50D', size: 100, opacity: 35 }, // Bicep / Shoulder
+    '3': { color: '#14F0DE', size: 100, opacity: 35 }, // Forearm
+    '4': { color: '#43F94F', size: 100, opacity: 35 }, // Lower torso
+    '5': { color: '#FF941A', size: 100, opacity: 35 }, // Thighs
+    '6': { color: '#2BDABC', size: 100, opacity: 70 }, // Knees
+    '7': { color: '#FB0E81', size: 100, opacity: 45 }, // Ankles
+    '8': { color: '#DC2626', size: 100, opacity: 35 }, // Head
   },
   side: {
-    '1': { color: '#dc2626', size: 100, opacity: 50 },
-    '2': { color: '#0284c7', size: 100, opacity: 50 },
-    '3': { color: '#0d9488', size: 100, opacity: 50 },
-    '4': { color: '#059669', size: 100, opacity: 50 },
-    '5': { color: '#d97706', size: 100, opacity: 50 },
-    '6': { color: '#ea580c', size: 100, opacity: 50 },
+    '1': { color: '#DC2626', size: 100, opacity: 35 }, // Head
+    '2': { color: '#9469DD', size: 100, opacity: 35 }, // Upper torso
+    '3': { color: '#43F94F', size: 100, opacity: 35 }, // Lower torso
+    '4': { color: '#FF941A', size: 100, opacity: 35 }, // Thighs
+    '5': { color: '#2BDABC', size: 100, opacity: 70 }, // Knees
+    '6': { color: '#FB0E81', size: 100, opacity: 45 }, // Ankles
   },
-};
-
-const DEFAULT_SELECTED_SECTION: Record<BodyView, string> = {
-  front: '1',
-  back: '1',
-  side: '1',
 };
 
 export function BodyAvatarZoneSelect({ zones, onZoneClick }: BodyAvatarZoneSelectProps) {
   const [view, setView] = useState<BodyView>('front');
-  const [showCustomizer, setShowCustomizer] = useState(false);
-  const [sectionStylesByView, setSectionStylesByView] =
-    useState<Record<BodyView, SectionStyleMap>>(DEFAULT_SECTION_STYLES);
-  const [selectedSectionByView, setSelectedSectionByView] =
-    useState<Record<BodyView, string>>(DEFAULT_SELECTED_SECTION);
   const zoneBySlug = new Map(zones.map((z) => [z.slug, z]));
 
   const handleSlugClick = (slug: string, sectionId: string) => {
@@ -106,29 +95,6 @@ export function BodyAvatarZoneSelect({ zones, onZoneClick }: BodyAvatarZoneSelec
     if (!zone) return;
     const sectionLabel = VIEW_SECTIONS[view][sectionId] ?? zone.name;
     onZoneClick(zone, { view, sectionId, sectionLabel });
-  };
-
-  const activeSectionId = selectedSectionByView[view];
-  const activeSectionStyle = sectionStylesByView[view][activeSectionId];
-
-  const updateSectionStyle = (patch: Partial<BodyDiagramSectionStyle>) => {
-    setSectionStylesByView((prev) => ({
-      ...prev,
-      [view]: {
-        ...prev[view],
-        [activeSectionId]: {
-          ...prev[view][activeSectionId],
-          ...patch,
-        },
-      },
-    }));
-  };
-
-  const resetCurrentViewStyles = () => {
-    setSectionStylesByView((prev) => ({
-      ...prev,
-      [view]: DEFAULT_SECTION_STYLES[view],
-    }));
   };
 
   return (
@@ -162,98 +128,18 @@ export function BodyAvatarZoneSelect({ zones, onZoneClick }: BodyAvatarZoneSelec
         id={`body-view-panel-${view}`}
         role="tabpanel"
         aria-labelledby={`body-view-tab-${view}`}
-        className="flex flex-col gap-3"
+        className="flex justify-center"
       >
-        <div className="rounded-lg border border-gray-200 p-3 bg-gray-50">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Section Customizer</p>
-            <button
-              type="button"
-              onClick={() => setShowCustomizer((v) => !v)}
-              className="text-xs font-medium text-indigo-700 hover:text-indigo-900"
-            >
-              {showCustomizer ? 'Hide' : 'Show'}
-            </button>
-          </div>
-
-          {showCustomizer && (
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-2">
-                <label className="text-xs text-gray-600 flex flex-col gap-1">
-                  Section
-                  <select
-                    value={activeSectionId}
-                    onChange={(e) =>
-                      setSelectedSectionByView((prev) => ({ ...prev, [view]: e.target.value }))
-                    }
-                    className="h-9 rounded-md border border-gray-300 bg-white px-2 text-sm text-gray-800"
-                  >
-                    {Object.entries(VIEW_SECTIONS[view]).map(([id, label]) => (
-                      <option key={id} value={id}>
-                        {id}. {label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label className="text-xs text-gray-600 flex flex-col gap-1">
-                  Color
-                  <input
-                    type="color"
-                    value={activeSectionStyle.color}
-                    onChange={(e) => updateSectionStyle({ color: e.target.value })}
-                    className="h-9 w-full rounded-md border border-gray-300 bg-white p-1"
-                  />
-                </label>
-              </div>
-
-              <label className="text-xs text-gray-600 flex flex-col gap-1">
-                Size: {activeSectionStyle.size}%
-                <input
-                  type="range"
-                  min={70}
-                  max={165}
-                  step={1}
-                  value={activeSectionStyle.size}
-                  onChange={(e) => updateSectionStyle({ size: Number(e.target.value) })}
-                />
-              </label>
-
-              <label className="text-xs text-gray-600 flex flex-col gap-1">
-                Opacity: {activeSectionStyle.opacity}%
-                <input
-                  type="range"
-                  min={20}
-                  max={100}
-                  step={1}
-                  value={activeSectionStyle.opacity}
-                  onChange={(e) => updateSectionStyle({ opacity: Number(e.target.value) })}
-                />
-              </label>
-
-              <button
-                type="button"
-                onClick={resetCurrentViewStyles}
-                className="h-8 px-3 rounded-md border border-gray-300 bg-white text-xs font-medium text-gray-700 hover:border-gray-400"
-              >
-                Reset {VIEW_LABELS[view]} Defaults
-              </button>
-            </div>
+        <div className="w-full max-w-[220px]" role="group" aria-label="Select a body area where you felt discomfort">
+          {view === 'front' && (
+            <BodyAvatarFront onZoneClick={handleSlugClick} sectionStyles={DEFAULT_SECTION_STYLES.front} />
           )}
-        </div>
-
-        <div className="flex justify-center">
-          <div className="w-full max-w-[220px]" role="group" aria-label="Select a body area where you felt discomfort">
-            {view === 'front' && (
-              <BodyAvatarFront onZoneClick={handleSlugClick} sectionStyles={sectionStylesByView.front} />
-            )}
-            {view === 'back' && (
-              <BodyAvatarBack onZoneClick={handleSlugClick} sectionStyles={sectionStylesByView.back} />
-            )}
-            {view === 'side' && (
-              <BodyAvatarSide onZoneClick={handleSlugClick} sectionStyles={sectionStylesByView.side} />
-            )}
-          </div>
+          {view === 'back' && (
+            <BodyAvatarBack onZoneClick={handleSlugClick} sectionStyles={DEFAULT_SECTION_STYLES.back} />
+          )}
+          {view === 'side' && (
+            <BodyAvatarSide onZoneClick={handleSlugClick} sectionStyles={DEFAULT_SECTION_STYLES.side} />
+          )}
         </div>
       </div>
     </div>
