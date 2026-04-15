@@ -38,16 +38,18 @@ class SubjectAuthController extends Controller
     public function signup(SignUpRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $orgName = trim($data['organisation']);
-
-        $organisation = Organisation::firstOrCreate(['name' => $orgName]);
-        OrganisationDefaultCatalog::ensure($organisation);
+        $orgName = isset($data['organisation']) ? trim((string) $data['organisation']) : '';
+        $organisation = null;
+        if ($orgName !== '') {
+            $organisation = Organisation::firstOrCreate(['name' => $orgName]);
+            OrganisationDefaultCatalog::ensure($organisation);
+        }
 
         $subject = Subject::create([
             'subject_id' => $data['subject_id'],
-            'organisation' => $orgName,
-            'organisation_id' => $organisation->id,
-            'job_role' => $data['job_role'] ?? null,
+            'organisation' => $orgName !== '' ? $orgName : null,
+            'organisation_id' => $organisation?->id,
+            'job_role' => trim((string) $data['job_role']),
         ]);
 
         $token = $subject->createToken('api')->plainTextToken;

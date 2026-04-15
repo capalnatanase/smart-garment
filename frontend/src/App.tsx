@@ -15,6 +15,7 @@ import { FeedbackComfortPage } from './pages/FeedbackComfortPage';
 import { FeedbackExperiencePage } from './pages/FeedbackExperiencePage';
 import { AssessmentPreviewPage } from './pages/AssessmentPreviewPage';
 import { AssessmentCompletePage } from './pages/AssessmentCompletePage';
+import { WelcomePage } from './pages/WelcomePage';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -28,7 +29,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<WelcomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />

@@ -16,6 +16,7 @@ const VIEW_LABELS: Record<BodyView, string> = {
 
 interface BodyAvatarZoneSelectProps {
   zones: BodyZone[];
+  markedSlugs?: string[];
   onZoneClick: (
     zone: BodyZone,
     meta: { view: BodyView; sectionId: string; sectionLabel: string }
@@ -86,7 +87,7 @@ const DEFAULT_SECTION_STYLES: Record<BodyView, SectionStyleMap> = {
   },
 };
 
-export function BodyAvatarZoneSelect({ zones, onZoneClick }: BodyAvatarZoneSelectProps) {
+export function BodyAvatarZoneSelect({ zones, markedSlugs = [], onZoneClick }: BodyAvatarZoneSelectProps) {
   const [view, setView] = useState<BodyView>('front');
   const zoneBySlug = new Map(zones.map((z) => [z.slug, z]));
 
@@ -132,13 +133,25 @@ export function BodyAvatarZoneSelect({ zones, onZoneClick }: BodyAvatarZoneSelec
       >
         <div className="w-full max-w-[220px]" role="group" aria-label="Select a body area where you felt discomfort">
           {view === 'front' && (
-            <BodyAvatarFront onZoneClick={handleSlugClick} sectionStyles={DEFAULT_SECTION_STYLES.front} />
+            <BodyAvatarFront
+              onZoneClick={handleSlugClick}
+              sectionStyles={DEFAULT_SECTION_STYLES.front}
+              markedSlugs={markedSlugs}
+            />
           )}
           {view === 'back' && (
-            <BodyAvatarBack onZoneClick={handleSlugClick} sectionStyles={DEFAULT_SECTION_STYLES.back} />
+            <BodyAvatarBack
+              onZoneClick={handleSlugClick}
+              sectionStyles={DEFAULT_SECTION_STYLES.back}
+              markedSlugs={markedSlugs}
+            />
           )}
           {view === 'side' && (
-            <BodyAvatarSide onZoneClick={handleSlugClick} sectionStyles={DEFAULT_SECTION_STYLES.side} />
+            <BodyAvatarSide
+              onZoneClick={handleSlugClick}
+              sectionStyles={DEFAULT_SECTION_STYLES.side}
+              markedSlugs={markedSlugs}
+            />
           )}
         </div>
       </div>

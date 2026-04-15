@@ -42,6 +42,7 @@ interface BodyDiagramCompositeSvgProps {
   zones: BodyDiagramZone[];
   onZoneClick: (slug: string, sectionId: string) => void;
   sectionStyles?: Record<string, BodyDiagramSectionStyle>;
+  markedSlugs?: string[];
   className?: string;
   style?: CSSProperties;
 }
@@ -55,11 +56,16 @@ export function BodyDiagramCompositeSvg({
   zones,
   onZoneClick,
   sectionStyles,
+  markedSlugs = [],
   className = 'w-full h-auto block max-w-full',
   style,
 }: BodyDiagramCompositeSvgProps) {
   const maskId = useId().replace(/:/g, '-');
   const [activeZoneKey, setActiveZoneKey] = useState<string | null>(null);
+  const markedSlugSet = new Set(markedSlugs);
+  const markedSectionIds = new Set(
+    zones.filter((z) => markedSlugSet.has(z.slug)).map((z) => z.sectionId),
+  );
 
   const handle =
     (slug: string, sectionId: string) =>
@@ -128,9 +134,10 @@ export function BodyDiagramCompositeSvg({
           const scaledX = x + (width - scaledWidth) / 2;
           const scaledY = y + (height - scaledHeight) / 2;
           const usesCustomStyle = Boolean(sectionStyle);
+          const isMarked = markedSectionIds.has(zone.sectionId);
           const baseOpacity = Math.max(0, Math.min(1, (sectionStyle?.opacity ?? 50) / 100));
           const isActive = activeZoneKey === zoneKey;
-          const visualOpacity = isActive ? 0.8 : baseOpacity;
+          const visualOpacity = isMarked ? 0 : isActive ? 0.8 : baseOpacity;
           return (
             <rect
               key={zoneKey}
@@ -150,7 +157,7 @@ export function BodyDiagramCompositeSvg({
                       fill: sectionStyle!.color,
                       stroke: sectionStyle!.color,
                       fillOpacity: visualOpacity,
-                      strokeOpacity: Math.min(1, visualOpacity + 0.2),
+                      strokeOpacity: isMarked ? 0 : Math.min(1, visualOpacity + 0.2),
                       strokeWidth: 2,
                       filter: 'none',
                     }

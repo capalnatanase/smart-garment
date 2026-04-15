@@ -5,13 +5,14 @@ import type { BodyDiagramSectionStyle } from './BodyDiagramCompositeSvg';
 interface BodyAvatarBackProps {
   onZoneClick: (slug: string, sectionId: string) => void;
   sectionStyles?: Record<string, BodyDiagramSectionStyle>;
+  markedSlugs?: string[];
 }
 
 const VB_W = 1762;
 const VB_H = 3297;
 const BACK_SVG = '/images/back.svg';
 
-export function BodyAvatarBack({ onZoneClick, sectionStyles }: BodyAvatarBackProps) {
+export function BodyAvatarBack({ onZoneClick, sectionStyles, markedSlugs }: BodyAvatarBackProps) {
   return (
     <BodyDiagramCompositeSvg
       viewBoxWidth={VB_W}
@@ -22,6 +23,7 @@ export function BodyAvatarBack({ onZoneClick, sectionStyles }: BodyAvatarBackPro
       zones={bodyBackOverlayZones}
       onZoneClick={onZoneClick}
       sectionStyles={sectionStyles}
+      markedSlugs={markedSlugs}
     />
   );
 }

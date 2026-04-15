@@ -114,7 +114,7 @@ export function DiscomfortLevelPage() {
   const handleBack = () => navigate(`/assessment/movements/${index}/zones`);
 
   return (
-    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto pb-24">
+    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto">
       <AssessmentProgressHeader
         movementIndex={index}
         onBack={handleBack}
@@ -164,7 +164,7 @@ export function DiscomfortLevelPage() {
         </p>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 max-w-mobile mx-auto p-6 bg-white border-t border-gray-200">
+      <div className="mt-6">
         <button
           type="button"
           onClick={handleNext}

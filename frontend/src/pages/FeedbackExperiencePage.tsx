@@ -49,7 +49,7 @@ export function FeedbackExperiencePage() {
   const handleBack = () => navigate('/assessment/feedback/comfort');
 
   return (
-    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto pb-24">
+    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto">
       <div className="mb-4 p-4 bg-gray-50 rounded-lg">
         <h2 className="text-xl font-semibold text-gray-900">Fit Assessment</h2>
       </div>
@@ -82,7 +82,7 @@ export function FeedbackExperiencePage() {
 
       <FeedbackProgressHeader step={4} onBack={handleBack} />
 
-      <div className="fixed bottom-0 left-0 right-0 max-w-mobile mx-auto p-6 bg-white border-t border-gray-200">
+      <div className="mt-6">
         <button
           type="button"
           onClick={handleContinue}

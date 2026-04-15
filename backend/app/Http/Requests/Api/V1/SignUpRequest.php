@@ -15,8 +15,8 @@ class SignUpRequest extends FormRequest
     {
         return [
             'subject_id' => ['required', 'string', 'max:255', 'regex:/^SUB-\d{4}-\d+$/', 'unique:subjects,subject_id'],
-            'organisation' => ['required', 'string', 'max:255'],
-            'job_role' => ['nullable', 'string', 'max:255'],
+            'organisation' => ['nullable', 'string', 'max:255'],
+            'job_role' => ['required', 'string', 'max:255'],
         ];
     }
 

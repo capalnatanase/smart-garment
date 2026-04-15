@@ -147,7 +147,7 @@ export function ZoneDetailPage() {
   const handleBack = () => navigate(`/assessment/movements/${index}/zones`);
 
   return (
-    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto pb-24">
+    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto">
       <AssessmentProgressHeader
         movementIndex={index}
         onBack={handleBack}
@@ -176,7 +176,7 @@ export function ZoneDetailPage() {
           <p id="restriction-label" className="text-sm font-medium text-gray-900 mb-2">
             The garment restricted my movement in this area:
           </p>
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
             {([1, 2, 3, 4, 5] as const).map((n) => (
               <button
                 key={n}
@@ -184,7 +184,7 @@ export function ZoneDetailPage() {
                 onClick={() => setRestriction(n)}
                 aria-pressed={restriction === n}
                 aria-label={`${n}, ${n === 1 ? 'Strongly Disagree' : n === 5 ? 'Strongly Agree' : n}`}
-                className={`w-10 h-10 rounded-lg border-2 font-medium text-sm ${
+                className={`flex-1 h-11 rounded-lg border-2 font-medium text-base ${
                   restriction === n
                     ? 'bg-indigo-600 border-indigo-600 text-white'
                     : 'bg-white border-gray-300 text-gray-700 hover:border-indigo-400'
@@ -204,7 +204,7 @@ export function ZoneDetailPage() {
           <p id="discomfort-label" className="text-sm font-medium text-gray-900 mb-2">
             I experienced physical discomfort in this area:
           </p>
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
             {([1, 2, 3, 4, 5] as const).map((n) => (
               <button
                 key={n}
@@ -212,7 +212,7 @@ export function ZoneDetailPage() {
                 onClick={() => setDiscomfort(n)}
                 aria-pressed={discomfort === n}
                 aria-label={`${n}, ${n === 1 ? 'Strongly Disagree' : n === 5 ? 'Strongly Agree' : n}`}
-                className={`w-10 h-10 rounded-lg border-2 font-medium text-sm ${
+                className={`flex-1 h-11 rounded-lg border-2 font-medium text-base ${
                   discomfort === n
                     ? 'bg-indigo-600 border-indigo-600 text-white'
                     : 'bg-white border-gray-300 text-gray-700 hover:border-indigo-400'
@@ -250,7 +250,7 @@ export function ZoneDetailPage() {
         </p>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 max-w-mobile mx-auto p-6 bg-white border-t border-gray-200">
+      <div className="mt-6">
         <button
           type="button"
           onClick={handleContinue}

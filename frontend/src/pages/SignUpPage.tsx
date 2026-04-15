@@ -25,16 +25,16 @@ export function SignUpPage() {
       setError('Subject ID must be in the format SUB-YYYY-NNNNNN (e.g. SUB-2026-000041).');
       return;
     }
-    if (!organisation.trim()) {
-      setError('Please enter your Organisation.');
+    if (!jobRole.trim()) {
+      setError('Please enter your Job Role.');
       return;
     }
     setLoading(true);
     try {
       const res = await subjectsApi.signup({
         subject_id: trimmedId,
-        organisation: organisation.trim(),
-        job_role: jobRole.trim() || undefined,
+        organisation: organisation.trim() || undefined,
+        job_role: jobRole.trim(),
       });
       setAuthToken(res.token);
       navigate('/dashboard', { replace: true });
@@ -67,7 +67,7 @@ export function SignUpPage() {
         </div>
         <div>
           <label htmlFor="organisation" className="block text-sm font-medium text-gray-700 mb-2">
-            Organisation
+            Organisation (optional)
           </label>
           <input
             id="organisation"
@@ -81,7 +81,7 @@ export function SignUpPage() {
         </div>
         <div>
           <label htmlFor="job-role" className="block text-sm font-medium text-gray-700 mb-2">
-            Job Role (optional)
+            Job Role
           </label>
           <input
             id="job-role"

@@ -6,13 +6,14 @@ import type { BodyDiagramSectionStyle } from './BodyDiagramCompositeSvg';
 interface BodyAvatarSideProps {
   onZoneClick: (slug: string, sectionId: string) => void;
   sectionStyles?: Record<string, BodyDiagramSectionStyle>;
+  markedSlugs?: string[];
 }
 
 const VB_W = 630;
 const VB_H = 3297;
 const SIDE_SVG = '/images/side.svg';
 
-export function BodyAvatarSide({ onZoneClick, sectionStyles }: BodyAvatarSideProps) {
+export function BodyAvatarSide({ onZoneClick, sectionStyles, markedSlugs }: BodyAvatarSideProps) {
   return (
     <BodyDiagramCompositeSvg
       viewBoxWidth={VB_W}
@@ -23,6 +24,7 @@ export function BodyAvatarSide({ onZoneClick, sectionStyles }: BodyAvatarSidePro
       zones={bodySideOverlayZones}
       onZoneClick={onZoneClick}
       sectionStyles={sectionStyles}
+      markedSlugs={markedSlugs}
       className="mx-auto block h-auto max-w-full"
       style={{ width: `${SIDE_DIAGRAM_WIDTH_RATIO * 100}%` }}
     />

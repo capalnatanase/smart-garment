@@ -81,7 +81,7 @@ export const subjectsApi = {
       body: JSON.stringify({ subject_id: subjectId }),
     }),
 
-  signup: (data: { subject_id: string; organisation: string; job_role?: string }) =>
+  signup: (data: { subject_id: string; organisation?: string; job_role: string }) =>
     api<LoginResponse>('/subjects/signup', {
       method: 'POST',
       body: JSON.stringify(data),

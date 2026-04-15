@@ -111,7 +111,17 @@ export function ZoneSelectPage() {
   }
 
   const existingResponse = session.movement_responses?.find((r) => r.movement_id === movement.id);
-  const hasSavedZones = (existingResponse?.body_zones?.length ?? 0) > 0;
+  const hasSavedZones =
+    (existingResponse?.body_zones?.length ?? 0) > 0 || (existingResponse?.body_zone_ids?.length ?? 0) > 0;
+  const zoneSlugById = new Map(zones.map((z) => [z.id, z.slug] as const));
+  const markedSlugs = Array.from(
+    new Set([
+      ...(existingResponse?.body_zones?.map((zone) => zone.slug) ?? []),
+      ...((existingResponse?.body_zone_ids ?? [])
+        .map((id) => zoneSlugById.get(id))
+        .filter((slug): slug is string => Boolean(slug))),
+    ])
+  );
   const canProceed = noIssues || hasSavedZones;
 
   const handleBack = () => navigate(`/assessment/movements/${index}`);
@@ -130,7 +140,7 @@ export function ZoneSelectPage() {
   };
 
   return (
-    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto pb-24">
+    <div className="min-h-svh flex flex-col bg-white px-6 py-8 max-w-mobile mx-auto">
       <AssessmentProgressHeader
         movementIndex={index}
         onBack={handleBack}
@@ -147,7 +157,7 @@ export function ZoneSelectPage() {
         Select any area you experienced restriction or discomfort.
       </p>
 
-      <BodyAvatarZoneSelect zones={zones} onZoneClick={handleZoneClick} />
+      <BodyAvatarZoneSelect zones={zones} markedSlugs={markedSlugs} onZoneClick={handleZoneClick} />
 
       <button
         type="button"
@@ -173,7 +183,7 @@ export function ZoneSelectPage() {
         </p>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 max-w-mobile mx-auto p-6 bg-white border-t border-gray-200">
+      <div className="mt-6">
         <button
           type="button"
           onClick={handleNext}

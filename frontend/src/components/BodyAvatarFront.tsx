@@ -5,13 +5,14 @@ import type { BodyDiagramSectionStyle } from './BodyDiagramCompositeSvg';
 interface BodyAvatarFrontProps {
   onZoneClick: (slug: string, sectionId: string) => void;
   sectionStyles?: Record<string, BodyDiagramSectionStyle>;
+  markedSlugs?: string[];
 }
 
 const VB_W = 1754;
 const VB_H = 3266;
 const FRONT_SVG = '/images/front.svg';
 
-export function BodyAvatarFront({ onZoneClick, sectionStyles }: BodyAvatarFrontProps) {
+export function BodyAvatarFront({ onZoneClick, sectionStyles, markedSlugs }: BodyAvatarFrontProps) {
   return (
     <BodyDiagramCompositeSvg
       viewBoxWidth={VB_W}
@@ -22,6 +23,7 @@ export function BodyAvatarFront({ onZoneClick, sectionStyles }: BodyAvatarFrontP
       zones={bodyFrontOverlayZones}
       onZoneClick={onZoneClick}
       sectionStyles={sectionStyles}
+      markedSlugs={markedSlugs}
     />
   );
 }
