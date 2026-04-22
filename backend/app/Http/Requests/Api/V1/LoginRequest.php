@@ -14,14 +14,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject_id' => ['required', 'string', 'max:255', 'regex:/^SUB-\d{4}-\d+$/'],
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'subject_id.regex' => 'The subject ID must be in the format SUB-YYYY-NNNNNN (e.g. SUB-2026-000041).',
+            'subject_id' => ['required', 'string', 'max:255'],
         ];
     }
 }

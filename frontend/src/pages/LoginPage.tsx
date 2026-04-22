@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { subjectsApi } from '../api/endpoints';
 import { setAuthToken, ApiError } from '../api/client';
 
-const SUBJECT_ID_PATTERN = /^SUB-\d{4}-\d+$/;
-
 export function LoginPage() {
   const navigate = useNavigate();
   const [subjectId, setSubjectId] = useState('');
@@ -17,10 +15,6 @@ export function LoginPage() {
     const trimmed = subjectId.trim();
     if (!trimmed) {
       setError('Please enter your Subject ID.');
-      return;
-    }
-    if (!SUBJECT_ID_PATTERN.test(trimmed)) {
-      setError('Subject ID must be in the format SUB-YYYY-NNNNNN (e.g. SUB-2026-000041).');
       return;
     }
     setLoading(true);
@@ -52,7 +46,7 @@ export function LoginPage() {
             type="text"
             value={subjectId}
             onChange={(e) => setSubjectId(e.target.value)}
-            placeholder="SUB-2026-000041"
+            placeholder="Enter your Subject ID"
             className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             autoComplete="off"
             disabled={loading}

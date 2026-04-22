@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('subject_id')->unique(); // e.g. SUB-2026-000041
+            $table->string('subject_id')->unique(); // free-text participant identifier
             $table->string('organisation')->nullable();
             $table->string('job_role')->nullable();
             $table->timestamps();

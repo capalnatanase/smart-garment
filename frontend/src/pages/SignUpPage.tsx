@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { subjectsApi } from '../api/endpoints';
 import { setAuthToken, ApiError } from '../api/client';
 
-const SUBJECT_ID_PATTERN = /^SUB-\d{4}-\d+$/;
-
 export function SignUpPage() {
   const navigate = useNavigate();
   const [subjectId, setSubjectId] = useState('');
@@ -19,10 +17,6 @@ export function SignUpPage() {
     const trimmedId = subjectId.trim();
     if (!trimmedId) {
       setError('Please enter your Subject ID.');
-      return;
-    }
-    if (!SUBJECT_ID_PATTERN.test(trimmedId)) {
-      setError('Subject ID must be in the format SUB-YYYY-NNNNNN (e.g. SUB-2026-000041).');
       return;
     }
     if (!jobRole.trim()) {
@@ -59,7 +53,7 @@ export function SignUpPage() {
             type="text"
             value={subjectId}
             onChange={(e) => setSubjectId(e.target.value)}
-            placeholder="SUB-2026-000041"
+            placeholder="Choose a Subject ID"
             className="w-full h-12 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             autoComplete="off"
             disabled={loading}

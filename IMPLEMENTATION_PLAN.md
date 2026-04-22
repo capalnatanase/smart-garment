@@ -18,7 +18,7 @@ Tech stack: **Laravel** (backend API) + **React + TypeScript** (frontend SPA).
 
 - Laravel 11.x, PHP 8.2+.
 - Database: PostgreSQL or MySQL.
-- Auth: no traditional user accounts — **subject identified by Subject ID** (e.g. `SUB-2026-000041`). Optional: session token or signed link per subject.
+- Auth: no traditional user accounts — **subject identified by a free-text Subject ID** (any string chosen by the participant or study). Optional: session token or signed link per subject.
 - CORS configured for the React app origin.
 - API prefix: `/api/v1`.
 
@@ -28,7 +28,7 @@ Tech stack: **Laravel** (backend API) + **React + TypeScript** (frontend SPA).
 
 | Table | Purpose |
 |------|--------|
-| `subjects` | `id`, `subject_id` (unique, e.g. SUB-2026-000041), `organisation`, `job_role` (nullable), `created_at`, `updated_at` |
+| `subjects` | `id`, `subject_id` (unique, free-text string up to 255 chars), `organisation`, `job_role` (nullable), `created_at`, `updated_at` |
 | `garments` | `id`, `name` (e.g. "Base Layer"), `created_at` |
 | `sizes` | `id`, `garment_id`, `name` (e.g. "S", "M"), `created_at` |
 | `assessment_sessions` | `id`, `subject_id`, `garment_id`, `size_id`, `started_at`, `completed_at` (nullable), `created_at`, `updated_at` |
@@ -46,7 +46,7 @@ Tech stack: **Laravel** (backend API) + **React + TypeScript** (frontend SPA).
 
 **Auth / Subject**
 
-- `POST /api/v1/subjects/login` — body: `{ "subject_id": "SUB-2026-000041" }`. Create or find subject, return session token + subject payload.
+- `POST /api/v1/subjects/login` — body: `{ "subject_id": "<any-string>" }`. Create or find subject, return session token + subject payload.
 - `POST /api/v1/subjects/signup` — body: `{ "subject_id", "organisation", "job_role" }`. Create subject, return session token.
 
 **Config (public or authenticated)**
@@ -77,7 +77,7 @@ Auth: subject session token in header (e.g. `Authorization: Bearer <token>` or c
 ### 2.5 Security and Validation
 
 - Rate limiting on login/signup.
-- Validate `subject_id` format if you have a standard (e.g. `SUB-\d{4}-\d+`).
+- `subject_id` is free-text; only enforce `required`, `string`, `max:255`, and uniqueness on signup.
 - Ensure all assessment endpoints are scoped to the authenticated subject and their sessions.
 
 ---

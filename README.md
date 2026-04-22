@@ -43,7 +43,7 @@ App: `http://localhost:5173`
 ### Try the flow
 
 1. Open `http://localhost:5173`
-2. Log in with Subject ID `SUB-2026-000041` (or use Sign up with organisation/job role)
+2. Log in with any Subject ID of your choice (or use Sign up with organisation/job role)
 3. On Garment Details, select “Base Layer” and a size, then Continue
 4. On the intro screen, click “Start Assessment”
 5. For each of the 5 movements: view instruction → “Select Discomfort Areas” → choose body zones or “No issues” → Next (last one completes the assessment)
@@ -59,7 +59,7 @@ App: `http://localhost:5173`
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/api/v1/subjects/login` | No | Body: `{ "subject_id": "SUB-2026-000041" }` → token + subject |
+| POST | `/api/v1/subjects/login` | No | Body: `{ "subject_id": "<any-string>" }` → token + subject |
 | POST | `/api/v1/subjects/signup` | No | Body: `{ "subject_id", "organisation", "job_role" }` → token + subject |
 | GET | `/api/v1/garments` | No | List garments with sizes |
 | GET | `/api/v1/movements` | No | List movements (order, name, video_url) |
@@ -70,4 +70,4 @@ App: `http://localhost:5173`
 | POST | `/api/v1/assessment-sessions/{id}/movement-responses` | Bearer | Body: `{ "movement_id", "no_issues"? , "body_zone_ids"? }` |
 | POST | `/api/v1/assessment-sessions/{id}/complete` | Bearer | Mark session completed |
 
-Subject ID format: `SUB-YYYY-NNNNNN` (e.g. `SUB-2026-000041`).
+Subject ID is free-text (any non-empty string up to 255 characters) and must be unique across subjects.
