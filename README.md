@@ -49,6 +49,24 @@ App: `http://localhost:5173`
 5. For each of the 5 movements: view instruction → “Select Discomfort Areas” → choose body zones or “No issues” → Next (last one completes the assessment)
 6. See the thank-you page; optionally “Start another assessment”
 
+## Admin panel (Filament)
+
+A Filament admin panel is mounted at `http://localhost:8000/admin` for browsing and editing all data (organisations, subjects, garments, sizes, movements, body zones, assessment sessions, and movement responses).
+
+After running `php artisan db:seed`, a default admin account is created:
+
+- Email: `admin@example.com`
+- Password: `password`
+
+Change those immediately for any non-local environment, or create a different admin user with:
+
+```bash
+cd backend
+php artisan make:filament-user
+```
+
+Admin access is gated by `User::canAccessPanel()` in `backend/app/Models/User.php`; tighten it (e.g. role/email allow-list) before exposing the panel publicly.
+
 ## Project layout
 
 - `backend/` — Laravel app (API, migrations, seeders, Subject auth)
