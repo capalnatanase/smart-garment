@@ -18,13 +18,13 @@ class AdminUserSeeder extends Seeder
     {
         $defaults = [
             ['email' => 'admin@example.com', 'name' => 'Admin', 'password' => 'password'],
-            ['email' => 'Mia@smartgarmentpeople.com', 'name' => 'Mia', 'password' => 'SmartGarment'],
+            ['email' => 'mia@smartgarmentpeople.com', 'name' => 'Mia', 'password' => 'SmartGarment'],
             ['email' => 'cath@smartgarmentpeople.com', 'name' => 'Cath', 'password' => 'SmartGarment'],
         ];
 
         foreach ($defaults as $user) {
             User::updateOrCreate(
-                ['email' => $user['email']],
+                ['email' => strtolower($user['email'])],
                 [
                     'name' => $user['name'],
                     'password' => Hash::make($user['password']),
